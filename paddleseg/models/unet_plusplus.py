@@ -43,7 +43,7 @@ class UNetPlusPlus(nn.Layer):
 
     def __init__(self,
                  num_classes,
-                 in_channels=3,
+                 in_channels=4,
                  use_deconv=False,
                  align_corners=False,
                  pretrained=None,

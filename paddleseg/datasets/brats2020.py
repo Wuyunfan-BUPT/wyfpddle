@@ -28,7 +28,7 @@ URL = "http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip"
 
 
 @manager.DATASETS.add_component
-class ADE20K(Dataset):
+class brats2020(Dataset):
     """
     ADE20K dataset `http://sceneparsing.csail.mit.edu/`.
 
@@ -38,7 +38,7 @@ class ADE20K(Dataset):
         mode (str, optional): A subset of the entire dataset. It should be one of ('train', 'val'). Default: 'train'.
         edge (bool, optional): Whether to compute edge while training. Default: False
     """
-    NUM_CLASSES = 150
+    NUM_CLASSES = 4
 
     def __init__(self, transforms, dataset_root=None, mode='train', edge=False):
         self.dataset_root = dataset_root
@@ -82,7 +82,7 @@ class ADE20K(Dataset):
             label_dir = os.path.join(self.dataset_root,
                                      'annotations/validation')
         img_files = os.listdir(img_dir)
-        label_files = [i.replace('.jpg', '.png') for i in img_files]
+        label_files = [i.replace('.tiff', '.png') for i in img_files]
         for i in range(len(img_files)):
             img_path = os.path.join(img_dir, img_files[i])
             label_path = os.path.join(label_dir, label_files[i])

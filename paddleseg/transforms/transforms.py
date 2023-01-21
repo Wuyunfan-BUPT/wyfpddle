@@ -40,7 +40,7 @@ class Compose:
         ValueError: when the length of 'transforms' is less than 1.
     """
 
-    def __init__(self, transforms, to_rgb=True, img_channels=3):
+    def __init__(self, transforms, to_rgb=True, img_channels=4):
         if not isinstance(transforms, list):
             raise TypeError('The transforms must be a list!')
         self.transforms = transforms
@@ -60,8 +60,9 @@ class Compose:
         if 'img' not in data.keys():
             raise ValueError("`data` must include `img` key.")
         if isinstance(data['img'], str):
-            data['img'] = cv2.imread(data['img'],
-                                     self.read_flag).astype('float32')
+            data['img'] = cv2.imread(data['img'], cv2.IMREAD_UNCHANGED).astype('float32')
+            # data['img'] = cv2.imread(data['img'],
+            #                          self.read_flag)#.astype('float32')
         if data['img'] is None:
             raise ValueError('Can\'t read The image file {}!'.format(data[
                 'img']))
@@ -73,7 +74,7 @@ class Compose:
             raise ValueError(
                 'The img_channels ({}) is not equal to the channel of loaded image ({})'.
                 format(self.img_channels, img_channels))
-        if self.to_rgb and img_channels == 3:
+        if self.to_rgb and img_channels == 4:
             data['img'] = cv2.cvtColor(data['img'], cv2.COLOR_BGR2RGB)
 
         if 'label' in data.keys() and isinstance(data['label'], str):

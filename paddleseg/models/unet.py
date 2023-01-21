@@ -44,7 +44,7 @@ class UNet(nn.Layer):
                  num_classes,
                  align_corners=False,
                  use_deconv=False,
-                 in_channels=3,
+                 in_channels=4,
                  pretrained=None):
         super().__init__()
 
@@ -74,7 +74,7 @@ class UNet(nn.Layer):
 
 
 class Encoder(nn.Layer):
-    def __init__(self, in_channels=3):
+    def __init__(self, in_channels=4):
         super().__init__()
 
         self.double_conv = nn.Sequential(
