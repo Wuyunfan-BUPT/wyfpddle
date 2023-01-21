@@ -74,7 +74,7 @@ class Compose:
             raise ValueError(
                 'The img_channels ({}) is not equal to the channel of loaded image ({})'.
                 format(self.img_channels, img_channels))
-        if self.to_rgb and img_channels == 4:
+        if self.to_rgb and img_channels == 3:
             data['img'] = cv2.cvtColor(data['img'], cv2.COLOR_BGR2RGB)
 
         if 'label' in data.keys() and isinstance(data['label'], str):

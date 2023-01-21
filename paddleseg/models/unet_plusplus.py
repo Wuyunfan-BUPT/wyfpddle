@@ -54,7 +54,8 @@ class UNetPlusPlus(nn.Layer):
         channels = [32, 64, 128, 256, 512]
         self.pool = nn.MaxPool2D(kernel_size=2, stride=2)
 
-        self.conv0_0 = DoubleConv(in_channels, channels[0])
+        self.conv0_0 = DoubleConv(4, channels[0])
+        #self.conv0_0 = DoubleConv(in_channels, channels[0])
         self.conv1_0 = DoubleConv(channels[0], channels[1])
         self.conv2_0 = DoubleConv(channels[1], channels[2])
         self.conv3_0 = DoubleConv(channels[2], channels[3])

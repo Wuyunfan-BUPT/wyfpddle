@@ -47,8 +47,9 @@ class UNet(nn.Layer):
                  in_channels=4,
                  pretrained=None):
         super().__init__()
-
-        self.encode = Encoder(in_channels)
+        in_channels=int(4),
+        # self.encode = Encoder(in_channels)
+        self.encode = Encoder(4)
         self.decode = Decoder(align_corners, use_deconv=use_deconv)
         self.cls = self.conv = nn.Conv2D(
             in_channels=64,
