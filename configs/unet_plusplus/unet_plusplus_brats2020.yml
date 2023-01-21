@@ -1,7 +1,7 @@
 _base_: '../_base_/brats2020.yml'
 
 batch_size: 4
-iters: 80000
+iters: 800000
 
 model:
   type: UNetPlusPlus
