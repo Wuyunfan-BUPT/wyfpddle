@@ -63,7 +63,7 @@ class brats2020(Dataset):
                 url=URL,
                 savepath=seg_env.DATA_HOME,
                 extrapath=seg_env.DATA_HOME,
-                extraname='ADEChallengeData2016')
+                extraname='brats2020')
         elif not os.path.exists(self.dataset_root):
             self.dataset_root = os.path.normpath(self.dataset_root)
             savepath, extraname = self.dataset_root.rsplit(
@@ -101,7 +101,7 @@ class brats2020(Dataset):
 
             # The class 0 is ignored. And it will equal to 255 after
             # subtracted 1, because the dtype of label is uint8.
-            label = label - 1
+            #label = label - 1
             label = label[np.newaxis, :, :]
             data['label'] = label
             return data
@@ -109,7 +109,7 @@ class brats2020(Dataset):
             data['label'] = label_path
             data['gt_fields'].append('label')
             data = self.transforms(data)
-            data['label'] = data['label'] - 1
+            #data['label'] = data['label'] - 1
             # Recover the ignore pixels adding by transform
             data['label'][data['label'] == 254] = 255
             if self.edge:
