@@ -7,4 +7,4 @@ model:
   type: UNet
   num_classes: 4
   use_deconv: False
-  pretrained: Null
+  pretrained: ./output_unet/iter_180000/model.pdparams

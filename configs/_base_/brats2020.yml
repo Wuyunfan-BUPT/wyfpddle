@@ -4,6 +4,7 @@ iters: 80000
 train_dataset:
   type: brats2020
   dataset_root: data/zcross/
+  num_classes: 4
   transforms:
     - type: RandomHorizontalFlip
     - type: RandomVerticalFlip
@@ -12,6 +13,7 @@ train_dataset:
 val_dataset:
   type: brats2020
   dataset_root: data/zcross/
+  num_classes: 4
   transforms:
     - type: RandomHorizontalFlip
     - type: RandomVerticalFlip
@@ -32,4 +34,5 @@ lr_scheduler:
 loss:
   types:
     - type: CrossEntropyLoss
+      weight: [0.1, 0.3, 0.3, 0.3]
   coef: [1]
