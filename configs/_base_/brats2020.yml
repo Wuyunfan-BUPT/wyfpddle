@@ -1,20 +1,18 @@
-batch_size: 4
+batch_size: 2
 iters: 80000
 
 train_dataset:
   type: brats2020
-  dataset_root: data/zcross/
+  dataset_root: data/zcross
   transforms:
     - type: RandomHorizontalFlip
-    - type: RandomVerticalFlip
   mode: train
 
 val_dataset:
   type: brats2020
-  dataset_root: data/zcross/
+  dataset_root: data/zcross
   transforms:
     - type: RandomHorizontalFlip
-    - type: RandomVerticalFlip
   mode: val
 
 
@@ -31,6 +29,7 @@ lr_scheduler:
 
 loss:
   types:
-    - type: CrossEntropyLoss
+    - type: DiceLoss
+    #- type: CrossEntropyLoss
       weight: [0.1, 0.3, 0.3, 0.3]
   coef: [1]
