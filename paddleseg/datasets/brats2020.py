@@ -111,7 +111,7 @@ class brats2020(Dataset):
             data = self.transforms(data)
             #data['label'] = data['label'] - 1
             # Recover the ignore pixels adding by transform
-            data['label'][data['label'] == 254] = 255
+            #data['label'][data['label'] == 254] = 255
             if self.edge:
                 edge_mask = F.mask_to_binary_edge(
                     label, radius=2, num_classes=self.num_classes)
