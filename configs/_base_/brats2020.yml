@@ -12,6 +12,9 @@ train_dataset:
 val_dataset:
   type: brats2020
   dataset_root: data/zcross/
+  transforms:
+    - type: RandomHorizontalFlip
+    - type: RandomVerticalFlip
   mode: val
 
 
