@@ -1,7 +1,7 @@
 _base_: '../_base_/brats2020cross1_ignore.yml'
 
 batch_size: 2
-iters: 600000
+iters: 800000
 
 model:
   type: UNet
