@@ -29,3 +29,4 @@ from .chase_db1 import CHASEDB1
 from .pp_humanseg14k import PPHumanSeg14K
 from .pssl import PSSLDataset
 from .brats2020 import brats2020
+from .brats2020_ignore import brats2020_ignore

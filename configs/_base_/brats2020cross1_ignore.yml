@@ -1,0 +1,32 @@
+batch_size: 2
+iters: 80000
+
+train_dataset:
+  type: brats2020_ignore
+  dataset_root: data/zcross
+  transforms:
+    - type: RandomHorizontalFlip
+  mode: train
+
+val_dataset:
+  type: brats2020_ignore
+  dataset_root: data/zcross
+  transforms:
+    - type: RandomHorizontalFlip
+  mode: val
+
+
+optimizer:
+  type: AdamW
+  weight_decay: 0.01
+
+lr_scheduler:
+  type: PolynomialDecay
+  learning_rate: 0.001
+  end_lr: 0
+  power: 1.0
+
+loss:
+  types:
+    - type: CrossEntropyLoss
+  coef: [1]
