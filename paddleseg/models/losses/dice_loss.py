@@ -45,7 +45,13 @@ class DiceLoss(nn.Layer):
         mask = labels != self.ignore_index
         mask = paddle.cast(paddle.unsqueeze(mask, 1), 'float32')
 
-        #labels[labels == self.ignore_index] = 0
+        labels = labels.numpy()
+        labels[labels == 2] = 3
+        labels[labels==1] = 2
+        labels[labels==0]=1
+        labels[labels == self.ignore_index] = 0
+
+        labels = paddle.to_tensor(labels)
         labels_one_hot = F.one_hot(labels, num_class)
         labels_one_hot = paddle.transpose(labels_one_hot, [0, 3, 1, 2])
         logits = F.softmax(logits, axis=1)

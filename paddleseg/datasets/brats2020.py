@@ -101,7 +101,7 @@ class brats2020(Dataset):
 
             # The class 0 is ignored. And it will equal to 255 after
             # subtracted 1, because the dtype of label is uint8.
-            #label = label - 1
+            label = label - 1
             label = label[np.newaxis, :, :]
             data['label'] = label
             return data
@@ -109,9 +109,9 @@ class brats2020(Dataset):
             data['label'] = label_path
             data['gt_fields'].append('label')
             data = self.transforms(data)
-            #data['label'] = data['label'] - 1
+            data['label'] = data['label'] - 1
             # Recover the ignore pixels adding by transform
-            #data['label'][data['label'] == 254] = 255
+            data['label'][data['label'] == 254] = 255
             if self.edge:
                 edge_mask = F.mask_to_binary_edge(
                     label, radius=2, num_classes=self.num_classes)
