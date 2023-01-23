@@ -1,0 +1,11 @@
+_base_: '../_base_/brats2020cross.yml'
+
+batch_size: 2
+iters: 300000
+
+model:
+  type: UNet
+  num_classes: 4
+  in_channels: 4
+  use_deconv: False
+  # pretrained: ./output_unet/iter_180000/model.pdparams
