@@ -1,6 +1,6 @@
-_base_: '../_base_/brats2020.yml'
+_base_: '../_base_/brats2020cross1_ignore1.yml'
 
-batch_size: 4
+batch_size: 2
 iters: 800000
 
 model:
