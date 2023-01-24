@@ -215,7 +215,7 @@ class ResNet_vd(nn.Layer):
                  layers=50,
                  output_stride=8,
                  multi_grid=(1, 1, 1),
-                 in_channels=3,
+                 in_channels=4,
                  pretrained=None,
                  data_format='NCHW'):
         super(ResNet_vd, self).__init__()
