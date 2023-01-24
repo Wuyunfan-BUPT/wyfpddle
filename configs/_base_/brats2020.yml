@@ -29,7 +29,5 @@ lr_scheduler:
 
 loss:
   types:
-    - type: DiceLoss
-    #- type: CrossEntropyLoss
-      weight: [0.1, 0.3, 0.3, 0.3]
+    - type: CrossEntropyLoss
   coef: [1]
