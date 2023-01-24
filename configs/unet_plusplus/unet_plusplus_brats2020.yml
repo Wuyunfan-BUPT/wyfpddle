@@ -1,7 +1,7 @@
 _base_: '../_base_/brats2020cross1_ignore1.yml'
 
 batch_size: 2
-iters: 800000
+iters: 1000000
 
 model:
   type: UNetPlusPlus
@@ -9,5 +9,5 @@ model:
   num_classes: 4
   use_deconv: False
   align_corners: False
-  pretrained: Null
   is_ds: True
+  pretrained: Null
