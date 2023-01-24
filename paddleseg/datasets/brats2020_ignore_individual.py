@@ -82,7 +82,7 @@ class brats2020_ignore_individual(Dataset):
             label_dir = os.path.join(self.dataset_root,
                                      'annotations/validation')
         img_files = os.listdir(img_dir)
-        label_files = [i.replace('.png', '.png') for i in img_files]
+        label_files = [i.replace('.png', '_seg.png') for i in img_files]
         for i in range(len(img_files)):
             img_path = os.path.join(img_dir, img_files[i])
             label_path = os.path.join(label_dir, label_files[i])
