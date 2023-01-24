@@ -253,7 +253,8 @@ class ResNet_vd(nn.Layer):
             dilation_dict = {3: 2}
 
         self.conv1_1 = ConvBNLayer(
-            in_channels=in_channels,
+            #in_channels=in_channels,
+            in_channels=4,
             out_channels=32,
             kernel_size=3,
             stride=2,
