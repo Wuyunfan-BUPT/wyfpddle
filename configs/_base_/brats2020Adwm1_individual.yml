@@ -1,0 +1,32 @@
+batch_size: 2
+iters: 800000
+
+train_dataset:
+  type: brats2020_ignore_individual
+  dataset_root: data/individual
+  transforms:
+    - type: RandomHorizontalFlip
+  mode: train
+
+val_dataset:
+  type: brats2020_ignore_individual
+  dataset_root: data/individual
+  transforms:
+    - type: RandomHorizontalFlip
+  mode: val
+
+
+optimizer:
+  type: AdamW
+  weight_decay: 0.01
+
+lr_scheduler:
+  type: PolynomialDecay
+  learning_rate: 0.00006
+  end_lr: 0
+  power: 1.0
+
+loss:
+  types:
+    - type: DiceLoss
+  coef: [1]
