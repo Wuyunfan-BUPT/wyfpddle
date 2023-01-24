@@ -85,7 +85,8 @@ class Compose:
             data['trans_info'] = []
 
         for op in self.transforms:
-            data = op(data)
+            #data = op(data)
+            pass
 
         if data['img'].ndim == 2:
             data['img'] = data['img'][..., np.newaxis]
