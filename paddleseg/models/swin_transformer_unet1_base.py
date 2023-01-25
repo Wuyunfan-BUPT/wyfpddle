@@ -339,8 +339,13 @@ class PatchMerging(nn.Layer):
     def __init__(self, dim, norm_layer=nn.LayerNorm):
         super().__init__()
         self.dim = dim
-        self.reduction = nn.Linear(4 * dim, 2 * dim, bias_attr=False)
-        self.norm = norm_layer(4 * dim)
+        if dim != 512:
+            self.reduction = nn.Linear(4 * dim, 2 * dim, bias_attr=False)
+            self.norm = norm_layer(4 * dim)
+        else:
+            self.reduction = nn.Linear(4 * dim, dim, bias_attr=False)
+            self.norm = norm_layer(4 * dim)
+
 
     def forward(self, x, H, W):
         """
@@ -413,7 +418,7 @@ class BasicLayer(nn.Layer):
         # build blocks
         self.blocks = nn.LayerList([
             SwinTransformerBlock(
-                dim=dim,
+                dim=dim if dim!=1024 else 512,
                 num_heads=num_heads,
                 window_size=window_size,
                 shift_size=0 if (i % 2 == 0) else window_size // 2,
@@ -486,7 +491,7 @@ class PatchEmbed(nn.Layer):
         norm_layer (nn.Layer, optional): Normalization layer. Default: None
     """
 
-    def __init__(self, patch_size=4, in_chans=64, embed_dim=96, norm_layer=None):
+    def __init__(self, patch_size=4, in_chans=128, embed_dim=256, norm_layer=None):
         super().__init__()
         patch_size = to_2tuple(patch_size)
         self.patch_size = patch_size
@@ -521,7 +526,7 @@ class PatchEmbed(nn.Layer):
 
 
 @manager.BACKBONES.add_component
-class SwinTransformerUnet(nn.Layer):
+class SwinTransformerUnet1_base(nn.Layer):
     """
     The SwinTransformer implementation based on PaddlePaddle.
 
@@ -556,9 +561,9 @@ class SwinTransformerUnet(nn.Layer):
                  pretrain_img_size=224,
                  patch_size=2,
                  in_channels=4,
-                 embed_dim=96,
-                 depths=[2, 2, 6],
-                 num_heads=[3, 6, 12],
+                 embed_dim=256,
+                 depths=[2, 8, 2],
+                 num_heads=[8, 16, 32],
                  window_size=7,
                  mlp_ratio=4.,
                  qkv_bias=True,
@@ -580,7 +585,7 @@ class SwinTransformerUnet(nn.Layer):
         self.encode = Encoder(in_channels)
         self.decode = Decoder(align_corners, use_deconv=use_deconv)
         self.cls = self.conv = nn.Conv2D(
-            in_channels=32,
+            in_channels=64,
             out_channels=num_classes,
             kernel_size=3,
             stride=1,
@@ -597,7 +602,7 @@ class SwinTransformerUnet(nn.Layer):
         # split image into non-overlapping patches
         self.patch_embed = PatchEmbed(
             patch_size=patch_size,
-            in_chans=64,
+            in_chans=128,
             embed_dim=embed_dim,
             norm_layer=norm_layer if self.patch_norm else None)
 
@@ -626,7 +631,7 @@ class SwinTransformerUnet(nn.Layer):
         self.layers = nn.LayerList()
         for i_layer in range(self.num_layers):
             layer = BasicLayer(
-                dim=int(embed_dim * 2**i_layer),
+                dim=int(embed_dim * 2**i_layer) if i_layer!=2 else 512,
                 depth=depths[i_layer],
                 num_heads=num_heads[i_layer],
                 window_size=window_size,
@@ -641,7 +646,8 @@ class SwinTransformerUnet(nn.Layer):
                 if (i_layer < self.num_layers - 1) else None)
             self.layers.append(layer)
 
-        feat_channels = [int(embed_dim * 2**i) for i in range(self.num_layers)]
+        feat_channels = [int(embed_dim * 2**i) for i in range(self.num_layers-1)]
+        feat_channels.append(512)
         self.feat_channels = feat_channels
 
         # add a norm layer for each output
@@ -719,8 +725,9 @@ class SwinTransformerUnet(nn.Layer):
                 out = x_out.reshape(
                     [-1, H, W, self.feat_channels[i]]).transpose([0, 3, 1, 2])
                 encoders.append(out)
-        out = encoders.pop()
 
+
+        out = encoders.pop()
         logit_list = []
         x = self.decode(out, encoders)
         logit = self.cls(x)
@@ -729,7 +736,7 @@ class SwinTransformerUnet(nn.Layer):
 
     def train(self):
         """Convert the model into training mode while keep layers freezed."""
-        super(SwinTransformerUnet, self).train()
+        super(SwinTransformerUnet1_base, self).train()
         self._freeze_stages()
 
 
@@ -739,8 +746,8 @@ class Encoder(nn.Layer):
         super().__init__()
 
         self.double_conv = nn.Sequential(
-            layers.ConvBNReLU(in_channels, 32, 3), layers.ConvBNReLU(32, 32, 3))
-        down_channels = [[32, 64], [64, 96]]
+            layers.ConvBNReLU(in_channels, 64, 3), layers.ConvBNReLU(64, 64, 3))
+        down_channels = [[64, 128], [128, 256]]
         self.down_sample_list = nn.LayerList([
             self.down_sampling(channel[0], channel[1])
             for channel in down_channels
@@ -765,7 +772,7 @@ class Decoder(nn.Layer):
     def __init__(self, align_corners, use_deconv=False):
         super().__init__()
 
-        up_channels = [[192, 96], [96, 64], [64, 32], [32, 32]]
+        up_channels = [ [512, 256], [256, 128], [128, 64], [64, 64]]
         self.up_sample_list = nn.LayerList([
             UpSampling(channel[0], channel[1], align_corners, use_deconv)
             for channel in up_channels
@@ -815,83 +822,3 @@ class UpSampling(nn.Layer):
         x = paddle.concat([x, short_cut], axis=1)
         x = self.double_conv(x)
         return x
-
-
-
-
-@manager.BACKBONES.add_component
-def SwinTransformerUnet_tiny_patch4_window7_224(**kwargs):
-    model = SwinTransformerUnet(
-        pretrain_img_size=224,
-        embed_dim=96,
-        depths=[2, 2, 6, 2],
-        num_heads=[3, 6, 12, 24],
-        window_size=7,
-        **kwargs)
-
-    return model
-
-
-@manager.BACKBONES.add_component
-def SwinTransformerUnet_small_patch4_window7_224(**kwargs):
-    model = SwinTransformerUnet(
-        pretrain_img_size=224,
-        embed_dim=96,
-        depths=[2, 2, 18, 2],
-        num_heads=[3, 6, 12, 24],
-        window_size=7,
-        **kwargs)
-
-    return model
-
-
-@manager.BACKBONES.add_component
-def SwinTransformerUnet_base_patch4_window7_224(**kwargs):
-    model = SwinTransformerUnet(
-        pretrain_img_size=224,
-        embed_dim=128,
-        depths=[2, 2, 18, 2],
-        num_heads=[4, 8, 16, 32],
-        window_size=7,
-        **kwargs)
-
-    return model
-
-
-@manager.BACKBONES.add_component
-def SwinTransformerUnet_base_patch4_window12_384(**kwargs):
-    model = SwinTransformerUnet(
-        pretrain_img_size=384,
-        embed_dim=128,
-        depths=[2, 2, 18, 2],
-        num_heads=[4, 8, 16, 32],
-        window_size=12,
-        **kwargs)
-
-    return model
-
-
-@manager.BACKBONES.add_component
-def SwinTransformerUnet_large_patch4_window7_224(**kwargs):
-    model = SwinTransformerUnet(
-        pretrain_img_size=224,
-        embed_dim=192,
-        depths=[2, 2, 18, 2],
-        num_heads=[6, 12, 24, 48],
-        window_size=7,
-        **kwargs)
-
-    return model
-
-
-@manager.BACKBONES.add_component
-def SwinTransformerUnet_large_patch4_window12_384(**kwargs):
-    model = SwinTransformerUnet(
-        pretrain_img_size=384,
-        embed_dim=192,
-        depths=[2, 2, 18, 2],
-        num_heads=[6, 12, 24, 48],
-        window_size=12,
-        **kwargs)
-
-    return model

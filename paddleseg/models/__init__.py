@@ -67,3 +67,5 @@ from .mscale_ocrnet import MscaleOCRNet
 from .topformer import TopFormer
 from .rtformer import RTFormer
 from .swin_transformer_unet import SwinTransformerUnet
+from .swin_transformer_unet1_small import SwinTransformerUnet1_small
+from .swin_transformer_unet1_base import SwinTransformerUnet1_base
