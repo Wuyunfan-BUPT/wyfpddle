@@ -66,3 +66,4 @@ from .lraspp import LRASPP
 from .mscale_ocrnet import MscaleOCRNet
 from .topformer import TopFormer
 from .rtformer import RTFormer
+from .swin_transformer_unet import SwinTransformerUnet

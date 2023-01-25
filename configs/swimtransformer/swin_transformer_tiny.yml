@@ -1,0 +1,10 @@
+_base_: '../_base_/brats2020.yml'
+
+batch_size: 2
+iters: 900000
+
+model:
+  type: SwinTransformerUnet
+  num_classes: 4
+  in_channels: 4
+  pretrained: Null
