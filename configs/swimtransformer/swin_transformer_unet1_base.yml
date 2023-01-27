@@ -1,4 +1,4 @@
-_base_: '../_base_/brats2020.yml'
+_base_: '../_base_/brats2020Adwm1_missloss.yml'
 
 batch_size: 2
 iters: 900000
@@ -7,4 +7,4 @@ model:
   type: SwinTransformerUnet1_base
   num_classes: 4
   in_channels: 4
-  pretrained: Null
+  pretrained: ./output_swin_transformer_unet1_base/iter_760000/model.pdparams
