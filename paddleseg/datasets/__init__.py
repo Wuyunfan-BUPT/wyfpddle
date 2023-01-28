@@ -31,3 +31,4 @@ from .pssl import PSSLDataset
 from .brats2020 import brats2020
 from .brats2020_ignore import brats2020_ignore
 from .brats2020_ignore_individual import brats2020_ignore_individual
+from .brats2020_ignore_medium import brats2020_ignore_medium
