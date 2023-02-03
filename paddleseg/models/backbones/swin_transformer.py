@@ -438,31 +438,33 @@ class BasicLayer(nn.Layer):
             x: Input feature, tensor size (B, H*W, C).
             H, W: Spatial resolution of the input feature.
         """
-        # calculate attention mask for SW-MSA
-        Hp = int(np.ceil(H / self.window_size)) * self.window_size
-        Wp = int(np.ceil(W / self.window_size)) * self.window_size
-        img_mask = paddle.zeros((1, Hp, Wp, 1))  # 1 Hp Wp 1
-        h_slices = (slice(0, -self.window_size),
+        if x.shape[1]>49:
+            # calculate attention mask for SW-MSA
+            Hp = int(np.ceil(H / self.window_size)) * self.window_size
+            Wp = int(np.ceil(W / self.window_size)) * self.window_size
+            img_mask = paddle.zeros((1, Hp, Wp, 1))  # 1 Hp Wp 1
+            h_slices = (slice(0, -self.window_size),
                     slice(-self.window_size, -self.shift_size),
                     slice(-self.shift_size, None))
-        w_slices = (slice(0, -self.window_size),
+            w_slices = (slice(0, -self.window_size),
                     slice(-self.window_size, -self.shift_size),
                     slice(-self.shift_size, None))
-        cnt = 0
-        for h in h_slices:
-            for w in w_slices:
-                img_mask[:, h, w, :] = cnt
-                cnt += 1
+            cnt = 0
+            for h in h_slices:
+                for w in w_slices:
+                    img_mask[:, h, w, :] = cnt
+                    cnt += 1
 
-        mask_windows = window_partition(
+            mask_windows = window_partition(
             img_mask, self.window_size)  # nW, window_size, window_size, 1
-        mask_windows = mask_windows.reshape(
+            mask_windows = mask_windows.reshape(
             [-1, self.window_size * self.window_size])
-        attn_mask = mask_windows.unsqueeze(1) - mask_windows.unsqueeze(2)
+            attn_mask = mask_windows.unsqueeze(1) - mask_windows.unsqueeze(2)
 
-        huns = -100.0 * paddle.ones_like(attn_mask)
-        attn_mask = huns * (attn_mask != 0).astype("float32")
-
+            huns = -100.0 * paddle.ones_like(attn_mask)
+            attn_mask = huns * (attn_mask != 0).astype("float32")
+        else:
+            attn_mask = None
         for blk in self.blocks:
             blk.H, blk.W = H, W
             x = blk(x, attn_mask)

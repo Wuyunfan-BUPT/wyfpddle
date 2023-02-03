@@ -1,5 +1,5 @@
 batch_size: 2
-iters: 80000
+iters: 800000
 
 train_dataset:
   type: brats2020_ignore
@@ -17,17 +17,20 @@ val_dataset:
 
 
 optimizer:
-  type: sgd
-  momentum: 0.9
-  weight_decay: 4.0e-5
+  type: AdamW
+  weight_decay: 0.01
 
 lr_scheduler:
   type: PolynomialDecay
-  learning_rate: 0.01
+  learning_rate: 0.00006
   end_lr: 0
-  power: 0.9
+  power: 1.0
 
 loss:
   types:
-    - type: CrossEntropyLoss
+    - type: MixedLoss
+      losses:
+        - type: CrossEntropyLoss
+        - type: DiceLoss
+      coef: [0.3, 0.7]
   coef: [1]

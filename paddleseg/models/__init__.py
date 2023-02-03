@@ -69,3 +69,4 @@ from .rtformer import RTFormer
 from .swin_transformer_unet import SwinTransformerUnet
 from .swin_transformer_unet1_small import SwinTransformerUnet1_small
 from .swin_transformer_unet1_base import SwinTransformerUnet1_base
+from .P_swinTransformer import P_swinTransformer
