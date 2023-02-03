@@ -8,4 +8,4 @@ model:
   num_classes: 4
   in_channels: 4
   use_deconv: False
-  pretrained: ./output_unet/iter_520000/model.pdparams
+  pretrained: Null #./output_unet/iter_520000/model.pdparams
