@@ -16,3 +16,10 @@ model:
   aux_loss: True
   use_se_loss: True
   add_lateral: True
+
+loss:
+  types:
+    - type: CrossEntropyLoss
+    - type: CrossEntropyLoss
+    - type: SECrossEntropyLoss
+  coef: [1, 0.4, 0.2]
