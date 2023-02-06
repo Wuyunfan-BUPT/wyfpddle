@@ -1,0 +1,16 @@
+_base_: '../_base_/brats2020.yml'
+
+batch_size: 2
+iters: 800000
+
+lr_scheduler:
+  type: PolynomialDecay
+  learning_rate: 0.05
+  end_lr: 0.0
+  power: 0.9
+
+model:
+  type: AttentionUNet
+  num_classes: 4
+  in_channels: 4
+  pretrained: Null
