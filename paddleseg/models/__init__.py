@@ -71,3 +71,5 @@ from .swin_transformer_unet1_small import SwinTransformerUnet1_small
 from .swin_transformer_unet1_base import SwinTransformerUnet1_base
 from .P_swinTransformer import P_swinTransformer
 from .swin_transformer_unet1_origin import SwinTransformerUnet1_origin
+from .swin_transformer_unet1_small_deep import SwinTransformerUnet1_small_deep
+from .swin_transformer_unet1_small_residual import SwinTransformerUnet1_small_residual
