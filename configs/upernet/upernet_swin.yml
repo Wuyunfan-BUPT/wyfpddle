@@ -1,4 +1,4 @@
-_base_: '../_base_/brats2020.yml'
+_base_: '../_base_/brats2020Adwm1_missloss.yml'
 
 batch_size: 2
 iters: 800000
@@ -12,25 +12,3 @@ model:
   channels: 256
   dropout_prob: 0.3
   enable_auxiliary_loss: False
-
-optimizer:
-  type: AdamW
-  weight_decay: 0.01
-
-
-
-loss:
-  types:
-    - type: MixedLoss
-      losses:
-        - type: CrossEntropyLoss
-        - type: DiceLoss
-      coef: [0.3, 0.7]
-  coef: [1]
-
-
-lr_scheduler:
-  type: PolynomialDecay
-  learning_rate: 0.00006
-  end_lr: 0
-  power: 1.0
