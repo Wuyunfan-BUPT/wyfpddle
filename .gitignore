@@ -98,7 +98,7 @@ venv/
 env.bak/
 venv.bak/
 data/
-output/
+output*/
 
 # Spyder project settings
 .spyderproject
