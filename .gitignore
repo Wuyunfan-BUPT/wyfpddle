@@ -99,6 +99,7 @@ env.bak/
 venv.bak/
 data/
 output*/
+output_swin_transformer_unet1_small_P/*
 
 # Spyder project settings
 .spyderproject
