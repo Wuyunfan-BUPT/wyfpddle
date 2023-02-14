@@ -9,6 +9,7 @@ model:
     type: CSwin_residual_uper
     in_channels: 4
     num_classes: 4
+    pretrained: ./output_swin_transformer_unet1_small_residual/iter_200000/model.pdparams
   num_classes: 4
   backbone_indices: [0, 1, 2, 3]
   channels: 256
