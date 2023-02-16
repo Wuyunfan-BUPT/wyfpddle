@@ -7,4 +7,4 @@ model:
   type: SwinTransformer_conv_Unet1_small
   num_classes: 4
   in_channels: 4
-  pretrained: Null
+  pretrained: ./output_SwinTransformer_conv_Unet1_small/iter_8264/iter_90000/model.pdparams
