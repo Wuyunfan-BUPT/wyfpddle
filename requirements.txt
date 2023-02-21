@@ -6,3 +6,6 @@ filelock
 scipy
 prettytable
 sklearn == 0.0
+medpy
+hausdorff
+numba
