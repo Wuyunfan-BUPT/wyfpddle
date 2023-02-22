@@ -1,6 +1,6 @@
 _base_: '../_base_/brats2020.yml'
 
-batch_size: 2
+batch_size: 8
 iters: 900000
 
 model:
