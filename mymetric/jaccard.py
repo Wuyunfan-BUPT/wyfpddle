@@ -1,0 +1,98 @@
+#!/usr/bin/env python 
+# -*- coding: utf-8 -*-
+# @Project : Guangfa UI test
+# @Time    : 2023/1/17 0:47
+# @Author  : wuyfee
+# @File    : jaccard.py
+# @Software: PyCharm
+
+
+from medpy import metric
+import numpy as np
+import os
+import cv2
+
+def jaccard(res, ref):
+    return 1.-metric.binary.jc(res, ref)
+
+def getResult_W(gt_path, seg_path):
+    gt_names = os.listdir(gt_path)
+    seg_names = os.listdir(seg_path)
+    assert (len(gt_names) == len(seg_names))
+    jaccards=[]
+
+    for name in seg_names:
+        seg_img = cv2.imread(f"{seg_path}/{name}",cv2.IMREAD_UNCHANGED)[:,:,0]
+        seg_img[seg_img < 255] = 1
+        seg_img[seg_img == 255] = 0
+
+        name = name.split(".")[0]
+        gt_img = cv2.imread(f"{gt_path}/{name}_seg.png", cv2.IMREAD_UNCHANGED)
+        gt_img[gt_img>0] = 1
+
+        dicet = jaccard(seg_img, gt_img)
+        jaccards.append(dicet)
+
+    jaccards = np.asanyarray(jaccards)
+
+    print(f"dices: {jaccards.mean()}")
+    return jaccards.mean()
+
+
+def getResult_T(gt_path, seg_path):
+    gt_names = os.listdir(gt_path)
+    seg_names = os.listdir(seg_path)
+    assert (len(gt_names) == len(seg_names))
+    jaccards=[]
+
+    for name in seg_names:
+        seg_img = cv2.imread(f"{seg_path}/{name}",cv2.IMREAD_UNCHANGED)[:,:,0]
+        seg_img[seg_img < 64] = 1
+        seg_img[seg_img > 64] = 0
+
+
+        name = name.split(".")[0]
+        gt_img = cv2.imread(f"{gt_path}/{name}_seg.png", cv2.IMREAD_UNCHANGED)
+        gt_img[gt_img==2] = 0
+        gt_img[gt_img == 3] = 1
+
+        dicet = jaccard(seg_img, gt_img)
+        jaccards.append(dicet)
+
+    jaccards = np.asanyarray(jaccards)
+    print(f"dices: {jaccards.mean()}")
+    return jaccards.mean()
+
+
+def getResult_E(gt_path, seg_path):
+    gt_names = os.listdir(gt_path)
+    seg_names = os.listdir(seg_path)
+    assert (len(gt_names) == len(seg_names))
+    jaccards=[]
+
+    for name in seg_names:
+        seg_img = cv2.imread(f"{seg_path}/{name}",cv2.IMREAD_UNCHANGED)[:,:,0]
+        seg_img[seg_img != 34] = 0
+        seg_img[seg_img == 34] = 3
+
+        name = name.split(".")[0]
+        gt_img = cv2.imread(f"{gt_path}/{name}_seg.png", cv2.IMREAD_UNCHANGED)
+        gt_img[gt_img!=3] = 0
+
+        dicet = jaccard(seg_img, gt_img)
+        jaccards.append(dicet)
+    jaccards = np.asanyarray(jaccards)
+    print(f"dices: {jaccards.mean()}")
+
+
+    return jaccards.mean()
+
+
+if __name__ == '__main__':
+
+    #upper_swim
+    #s_folder = r'D:\Program\PyCharm\mmsegment\githubKaggle\mmsegmentation\swinResult\model\swin\pretrained_upper\iter_490k'
+    s_folder = r'D:\Program\PyCharm\mmsegment\githubKaggle\mmsegmentation\vanAllTestResult\finaltest\fcn_unet_individual_P\iter_500k'
+    #s_folder = r'D:\Program\PyCharm\mmsegment\githubKaggle\mmsegmentation\vanAllTestResult\finaltest\fcn_vanunet_new\iter_300k'
+    g_folder = r'D:\Program\PyCharm\mmsegment\githubKaggle\mmsegmentation\data\bratsIndividual4C\annotations\test'
+    print(getResult_W(g_folder, s_folder))
