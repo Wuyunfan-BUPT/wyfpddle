@@ -1,4 +1,4 @@
-_base_: 'configs/_base_/brats2020Adwm1_missloss_PPPPPPPPPPPPNew.yml'
+_base_: '../_base_/brats2020Adwm1_missloss_PPPPPPPPPPPPNew.yml'
 
 batch_size: 16
 iters: 900000
