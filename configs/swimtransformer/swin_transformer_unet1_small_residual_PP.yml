@@ -1,6 +1,6 @@
 _base_: '../_base_/brats2020Adwm1_missloss_PPPPPPPPPPPPNew.yml'
 
-batch_size: 16
+batch_size: 4
 iters: 900000
 
 model:
