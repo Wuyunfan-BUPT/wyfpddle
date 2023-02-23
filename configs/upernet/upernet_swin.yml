@@ -1,14 +1,17 @@
 _base_: '../_base_/brats2020Adwm1_missloss.yml'
 
-batch_size: 2
+batch_size: 8
 iters: 800000
 
 model:
   type: UPerNet
   backbone:
-    type: SwinTransformer_tiny_patch4_window7_224
+    type: SwinTransformer
     in_channels: 4
+    embed_dim: 96
+    depths: [2, 2, 6, 2]
+    num_heads: [3, 6, 12, 24]
   backbone_indices: [0, 1, 2, 3]
-  channels: 256
+  channels: 96
   dropout_prob: 0.3
   enable_auxiliary_loss: False
