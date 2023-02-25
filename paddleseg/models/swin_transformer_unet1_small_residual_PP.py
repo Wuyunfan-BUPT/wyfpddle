@@ -439,7 +439,6 @@ class BasicLayer(nn.Layer):
             self.downsample = None
 
         # self.oneconvone = layers.ConvBNReLU(2*dim, dim, 1)
-        self.add = layers.Add()
 
     def forward(self, x, H, W):
         """
@@ -482,7 +481,6 @@ class BasicLayer(nn.Layer):
         # x_temp = x.reshape(
         #     [-1, H, W, x_temp.shape[2]]).transpose([0, 3, 1, 2])
         #x = x + x_temp
-        x = self.add(x, x_temp)
         # x = paddle.concat([x, x_temp], axis=1)
         # x = self.oneconvone(x)
         # x = x.flatten(2).transpose([0, 2, 1])
