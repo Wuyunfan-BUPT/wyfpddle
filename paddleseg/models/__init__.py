@@ -79,3 +79,4 @@ from .Pure_swin_transformer_Unet import PureSwinTransformerUnet
 from .swin_transformer_unet1_small_residual_PP import SwinTransformerUnet1_small_residual_PP
 from .CSwinT import CSwinTransformer
 from .swin_transformer_small_residual_PP import SwinTransformer_small_residual_PP
+from .swin_transformer_unet1_small_residual_PPS import SwinTransformerUnet1_small_residual_PPS
