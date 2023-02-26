@@ -447,7 +447,7 @@ class BasicLayer(nn.Layer):
             H, W: Spatial resolution of the input feature.
         """
         # calculate attention mask for SW-MSA
-        x_temp = x
+        #x_temp = x
         Hp = int(np.ceil(H / self.window_size)) * self.window_size
         Wp = int(np.ceil(W / self.window_size)) * self.window_size
         img_mask = paddle.zeros((1, Hp, Wp, 1))  # 1 Hp Wp 1
@@ -480,7 +480,7 @@ class BasicLayer(nn.Layer):
         #     [-1, H, W, x.shape[2]]).transpose([0, 3, 1, 2])
         # x_temp = x.reshape(
         #     [-1, H, W, x_temp.shape[2]]).transpose([0, 3, 1, 2])
-        x = x + x_temp
+        #x = x + x_temp
         # x = paddle.concat([x, x_temp], axis=1)
         # x = self.oneconvone(x)
         # x = x.flatten(2).transpose([0, 2, 1])
@@ -538,7 +538,7 @@ class PatchEmbed(nn.Layer):
 
 
 @manager.BACKBONES.add_component
-class CSwin_residual_uper(nn.Layer):
+class CSwin_Unet_uper(nn.Layer):
     """
     The SwinTransformer implementation based on PaddlePaddle.
 
@@ -748,7 +748,7 @@ class CSwin_residual_uper(nn.Layer):
 
     def train(self):
         """Convert the model into training mode while keep layers freezed."""
-        super(CSwin_residual_uper, self).train()
+        super(CSwin_Unet_uper, self).train()
         self._freeze_stages()
 
 

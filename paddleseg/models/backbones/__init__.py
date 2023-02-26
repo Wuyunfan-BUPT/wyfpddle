@@ -26,4 +26,4 @@ from .shufflenetv2 import *
 from .ghostnet import *
 from .top_transformer import *
 from .uhrnet import *
-from .cswin_residual_uper import CSwin_residual_uper
+from .cswin_unet_uper import CSwin_Unet_uper
