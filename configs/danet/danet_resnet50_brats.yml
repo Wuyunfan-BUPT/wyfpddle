@@ -1,16 +1,17 @@
 _base_: '../_base_/brats2020Adwm1_missloss.yml'
 
 batch_size: 8
-iters: 80000
+iters: 800000
 
 model:
   type: DANet
   backbone:
     type: ResNet50_vd
     output_stride: 8
-    pretrained: https://bj.bcebos.com/paddleseg/dygraph/resnet50_vd_ssld_v2.tar.gz
+    pretrained: Null #https://bj.bcebos.com/paddleseg/dygraph/resnet50_vd_ssld_v2.tar.gz
   num_classes: 4
   backbone_indices: [2, 3]
+  pretrained: output_danet_resnet50/best_model/model.pdparams
 
 
 loss:
