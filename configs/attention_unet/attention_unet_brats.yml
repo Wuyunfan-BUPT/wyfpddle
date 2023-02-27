@@ -1,6 +1,6 @@
-_base_: '../_base_/brats2020.yml'
+_base_: '../_base_/brats2020Adwm1_missloss.yml'
 
-batch_size: 2
+batch_size: 8
 iters: 800000
 
 lr_scheduler:
