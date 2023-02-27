@@ -1,0 +1,19 @@
+_base_: '../_base_/brats2020Adwm1_missloss.yml'
+
+batch_size: 8
+iters: 800000
+
+model:
+  type: DMNet
+  backbone:
+    type: ResNet50_vd
+    output_stride: 8
+    pretrained: Null #https://bj.bcebos.com/paddleseg/dygraph/resnet50_vd_ssld.tar.gz
+
+
+loss:
+  types:
+    - type: CrossEntropyLoss
+    - type: CrossEntropyLoss
+  coef: [1, 0.4]
+
