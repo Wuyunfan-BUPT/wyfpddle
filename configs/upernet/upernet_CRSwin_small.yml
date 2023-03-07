@@ -9,7 +9,7 @@ model:
     type: SwinTransformer_small_residual_PP
     num_classes: 4
     in_channels: 4
-    pretrained: Null #../../bigpaper/upernet_CRSwin_smal/iter_70000/model.pdparams #output_upernet_CSwin_small/best_model/model.pdparams
+    pretrained: ./output_upernet_CRSwin_small/model.pdparams #../../bigpaper/upernet_CRSwin_smal/iter_70000/model.pdparams #output_upernet_CSwin_small/best_model/model.pdparams
   backbone_indices: [0, 1, 2, 3, 4]
   channels: 32
   dropout_prob: 0.3
