@@ -7,6 +7,7 @@ model:
   type: UNet3Plus
   in_channels: 4
   num_classes: 4
+  pretrained: output_unet_3plus/best_model/model.pdparams
   is_batchnorm: True
   is_deepsup: False
   is_CGM: False
