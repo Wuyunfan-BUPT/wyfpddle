@@ -14,4 +14,4 @@ model:
   aspp_ratios: [1, 12, 24, 36]
   aspp_out_channels: 256
   align_corners: False
-  pretrained: null
+  pretrained: output_deeplabv3/best_model/model.pdparams
