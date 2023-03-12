@@ -7,4 +7,4 @@ model:
   type: SegNet
   num_classes: 4
   in_channels: 4
-  pretrained: output_segnet_brats/best_model/model.pdparams
+  pretrained: Null #output_segnet_brats/best_model/model.pdparams
