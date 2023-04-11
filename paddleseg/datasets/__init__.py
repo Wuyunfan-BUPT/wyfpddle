@@ -32,3 +32,5 @@ from .brats2020 import brats2020
 from .brats2020_ignore import brats2020_ignore
 from .brats2020_ignore_individual import brats2020_ignore_individual
 from .brats2020_ignore_medium import brats2020_ignore_medium
+from .brats2020_npz_ignore import brats2020_npz_ignore
+from .brats2020_npz_compress_ignore import brats2020_npz_compress_ignore

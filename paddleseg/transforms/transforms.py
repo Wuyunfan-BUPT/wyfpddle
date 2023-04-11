@@ -60,9 +60,12 @@ class Compose:
         if 'img' not in data.keys():
             raise ValueError("`data` must include `img` key.")
         if isinstance(data['img'], str):
-            data['img'] = cv2.imread(data['img'], cv2.IMREAD_UNCHANGED).astype('float32')
-            # data['img'] = cv2.imread(data['img'],
-            #                          self.read_flag)#.astype('float32')
+            # if data['type'] != None and data['type'] =='npz':
+            #     data['img'] = np.load(data['img'])['arr_0']
+            # else:
+            #data['img'] = cv2.imread(data['img'], cv2.IMREAD_UNCHANGED).astype('float32')
+            data['img'] = np.load(data['img'])['arr_0']
+
         if data['img'] is None:
             raise ValueError('Can\'t read The image file {}!'.format(data[
                 'img']))
@@ -78,7 +81,11 @@ class Compose:
             data['img'] = cv2.cvtColor(data['img'], cv2.COLOR_BGR2RGB)
 
         if 'label' in data.keys() and isinstance(data['label'], str):
-            data['label'] = np.asarray(Image.open(data['label']))
+            # if data['type'] != None and data['type'] =='npz':
+            #     data['label'] = np.load(data['label'])['arr_0']
+            # else:
+            #data['label'] = np.asarray(Image.open(data['label']))
+            data['label'] = np.load(data['label'])['arr_0']
 
         # the `trans_info` will save the process of image shape, and will be used in evaluation and prediction.
         if 'trans_info' not in data.keys():
